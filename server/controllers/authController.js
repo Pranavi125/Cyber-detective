@@ -12,6 +12,8 @@ const registerUser = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, phone } = req.body;
 
+        console.log("Received data:", req.body);
+        
         if (!name) {
             return res.status(400).json({ error: 'Name is required' });
         }
@@ -23,6 +25,9 @@ const registerUser = async (req, res) => {
         if (password !== confirmPassword) {
             return res.status(400).json({ error: 'Passwords do not match' });
         }
+
+        // Check if phone number is valid (10 digits)
+        if (!/^\d{10}$/.test(phone)) return res.status(400).json({ error: 'Phone number must be exactly 10 digits long' });
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {

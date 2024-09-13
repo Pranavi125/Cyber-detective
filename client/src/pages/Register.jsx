@@ -25,16 +25,25 @@ export default function Register() {
     // Trim passwords
     const trimmedPassword = password.trim();
     const trimmedConfirmPassword = confirmPassword.trim();
+    const trimmedPhone = phone.trim();
 
     console.log("State Password:", password);
     console.log("State Confirm Password:", confirmPassword);
     console.log("Trimmed Password:", trimmedPassword);
     console.log("Trimmed Confirm Password:", trimmedConfirmPassword);
+    console.log("Phone Number:", phone);
+    console.log("Trimmed Phone Number:", trimmedPhone);
 
     // Check if passwords match
     if (trimmedPassword !== trimmedConfirmPassword) {
       console.error('Validation Error: Passwords do not match');
       toast.error('Passwords do not match');
+      return;
+    }
+
+    if (!/^\d{10}$/.test(trimmedPhone)) {
+      toast.error('Phone number must be exactly 10 digits long');
+      console.error('Validation Error: Phone number must be exactly 10 digits long');
       return;
     }
 
@@ -44,7 +53,7 @@ export default function Register() {
         email: email.trim(), 
         password: trimmedPassword, 
         confirmPassword: trimmedConfirmPassword, 
-        phone: phone.trim()
+        phone: trimmedPhone
       });
 
       const { data } = response;
