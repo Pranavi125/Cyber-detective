@@ -1,0 +1,59 @@
+/* Dashboard.css */
+
+/* General styling for the dashboard container */
+.dashboard {
+    text-align: center;
+    color: white; /* Sets text color for the entire dashboard */
+}
+
+/* Styling for the dashboard heading */
+.dashboard h1 {
+    color: #fff; /* Sets the color of the heading text */
+    width: 200px;
+    height: 300px; /* Adds height to the heading */
+    margin: 0 auto; /* Centers the heading */
+}
+
+/* Updated Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: flex-end; /* Align navbar items to the right */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Styling for the navbar links (Login, Register, Logout) */
+.nav-button, .nav-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+/* Add hover effect for the links and button */
+.nav-link:hover, .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light transparent hover */
+}
+
+.nav-link:active, .nav-button:active {
+    background-color: rgba(255, 255, 255, 0.4); /* Slightly darker active state */
+}
+
+/* Specific styling for the logout button */
+.nav-button {
+    background-color: rgba(255, 255, 255, 0.538);; /* Red background for logout button */
+    padding: 10px 20px; /* Adjust padding for the button */
+}
+
+/* Hover effect for the logout button */
+.nav-button:hover {
+    background-color: #27293e; /* Slightly darker red on hover */
+}
