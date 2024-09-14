@@ -20,7 +20,7 @@ export default function Login() {
     e.preventDefault()
     const {email, password} = data
     try {
-      const {data} = await axios.post('/login', {
+      const {data} = await axios.post('auth/login', {
         email,
         password
       });
@@ -32,7 +32,13 @@ export default function Login() {
         navigate('/dashboard')
       }
     } catch (error) {
-      
+      if (error.response && error.response.data) {
+        // Handle specific error from the server
+        toast.error(error.response.data.error || 'An error occurred during login');
+      } else {
+        // Handle network or other errors
+        toast.error(error.message || 'An error occurred');
+      }
     }
   }
 
@@ -41,11 +47,11 @@ export default function Login() {
       <form onSubmit={loginUser}>
         <h1>Login</h1>
       <div className="input-box">
-        <input type='email' placeholder='Email' required value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
+        <input type='email' placeholder='Email' autoComplete="email" required value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
         <MdEmail className="icon"/>
       </div>
       <div className="input-box">
-        <input type='password' placeholder='Password' required value={data.password} onChange={(e) => setData({...data, password: e.target.value})} />
+        <input type='password' placeholder='Password' autoComplete="new-password" required value={data.password} onChange={(e) => setData({...data, password: e.target.value})} />
         <RiLockPasswordFill className="icon"/>
       </div>
       <div className="remember-forget">
@@ -60,5 +66,4 @@ export default function Login() {
     </div>
   )
 }
-
 

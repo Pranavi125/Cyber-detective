@@ -6,7 +6,7 @@ import './Register.css';
 import { FaUser } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { IoMdCall } from "react-icons/io"; // Import an icon for phone number
+import { IoMdCall } from "react-icons/io";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Register() {
     e.preventDefault();
     const { name, email, password, confirmPassword, phone } = data;
 
-    // Trim passwords
+    // Trim and validate data
     const trimmedPassword = password.trim();
     const trimmedConfirmPassword = confirmPassword.trim();
     const trimmedPhone = phone.trim();
@@ -41,6 +41,12 @@ export default function Register() {
       return;
     }
 
+    // Check if password length is valid
+  if (trimmedPassword.length < 6) {
+    toast.error('Password must be at least 6 characters long');
+    return;
+  }
+
     if (!/^\d{10}$/.test(trimmedPhone)) {
       toast.error('Phone number must be exactly 10 digits long');
       console.error('Validation Error: Phone number must be exactly 10 digits long');
@@ -48,11 +54,11 @@ export default function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/register', {
+      const response = await axios.post('http://localhost:8000/auth/register', {
         name: name.trim(), 
         email: email.trim(), 
         password: trimmedPassword, 
-        confirmPassword: trimmedConfirmPassword, 
+        confirmPassword: trimmedConfirmPassword,
         phone: trimmedPhone
       });
 
@@ -71,8 +77,8 @@ export default function Register() {
         navigate('/login');
       }
     } catch (error) {
-      console.error(error);
-      toast.error('An error occurred during registration');
+      console.error('Error:', error.response?.data || error.message);
+  toast.error(error.response?.data?.error || 'An error occurred during registration');
     }
   };
 
@@ -97,6 +103,7 @@ export default function Register() {
             value={data.email}
             required
             onChange={(e) => setData({ ...data, email: e.target.value })}
+             autoComplete="email"
           />
           <IoIosMail className="icon" />
         </div>
@@ -106,6 +113,7 @@ export default function Register() {
             placeholder='Password'
             value={data.password}
             onChange={(e) => setData({ ...data, password: e.target.value })}
+            autoComplete="new-password"
           />
           <RiLockPasswordFill className="icon" />
         </div>
@@ -115,6 +123,7 @@ export default function Register() {
             placeholder='Confirm Password'
             value={data.confirmPassword}
             onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
+            autoComplete="new-password"
           />
           <RiLockPasswordFill className="icon" />
         </div>

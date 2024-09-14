@@ -7,7 +7,7 @@ export default function Dashboard() {
     const { user, logout } = useContext(UserContext); // Ensure `logout` is available
     const navigate = useNavigate(); // Initialize navigate hook
 
-    const handleLogout = (event) => {
+    const handleLogout = async (event) => {
         event.preventDefault(); // Prevent default anchor tag behavior
 
         // Display a confirmation dialog
@@ -15,12 +15,14 @@ export default function Dashboard() {
 
         if (confirmLogout) {
             if (typeof logout === 'function') {
-                logout(); // Call the logout function to clear user session
-                
-                // Use a setTimeout to allow state updates or async logout operations to complete
-                setTimeout(() => {
-                    navigate('/'); // Navigate to home page after logout
-                }, 100); // Small delay to ensure logout completes
+                try {
+                    await logout(); // Call the logout function to clear user session
+                    
+                    // Redirect to home page after logout
+                    navigate('/'); 
+                } catch (error) {
+                    console.error('Logout failed:', error.response?.data || error.message);
+                }
             } else {
                 console.error('Logout function is not available');
             }

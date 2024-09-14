@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { test, registerUser, loginUser, getProfile } = require('../controllers/authController');
+const { test, registerUser, loginUser, getProfile , logout} = require('../controllers/authController');
+const authMiddleware = require('../middlewares/authMiddleware'); // Import your auth middleware
 
-// Middleware
+// Middleware for CORS
 router.use(
     cors({
         credentials: true,
@@ -11,10 +12,18 @@ router.use(
     })
 );
 
-// Routes
+// Test route
 router.get('/', test);
+
+// Register route
 router.post('/register', registerUser);
+
+// Login route
 router.post('/login', loginUser);
-router.get('/profile', getProfile);
+
+router.post('/logout', logout);
+
+// Profile route - Protected by auth middleware
+router.get('/profile', authMiddleware, getProfile);
 
 module.exports = router;
