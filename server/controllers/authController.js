@@ -25,10 +25,10 @@ const registerUser = async (req, res) => {
     if (!/^\d{10}$/.test(phone)) return res.json({ error: 'Phone number must be exactly 10 digits long' });
     
     // Check if email is already registered
-    const existingUser = await User.findOne({ email });
+    const existingUserByEmail = await User.findOne({ email });
     const existingUserByPhone = await User.findOne({ phone });
 
-    if (existingUser) {
+    if (existingUserByEmail) {
         return res.json({ error: 'Email is already taken' });
       }
       if (existingUserByPhone) {
