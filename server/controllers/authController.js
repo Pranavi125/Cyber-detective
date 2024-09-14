@@ -59,16 +59,18 @@ const registerUser = async (req, res) => {
 // Login endpoint
 const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, name, password } = req.body;
 
         // Validate input
         if (!email) return res.json({ error: 'Email is required' });
+        if (!name) return res.json({ error: 'Name is required' });
         if (!password) return res.json({ error: 'Password is required' });
 
         // Check if user exists
-        const user = await User.findOne({ email });
-        if (!user) return res.json({ error: 'No user found' });
-
+        const user = await User.findOne({ email, name });
+        if (!user){
+           return res.json({ error: 'No user found with the given name and email' });
+        }
         // Check if passwords match
         const match = await comparePassword(password, user.password);
         if (match) {
