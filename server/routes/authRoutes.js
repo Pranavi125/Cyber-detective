@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { test, registerUser, loginUser, getProfile , logout} = require('../controllers/authController');
+const { test, registerUser, loginUser, getProfile , logout, verifyOTP} = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware'); // Import your auth middleware
 
 // Middleware for CORS
@@ -20,6 +20,9 @@ router.post('/register', registerUser);
 
 // Login route
 router.post('/login', loginUser);
+
+// OTP verification route
+router.post('/verify-otp', verifyOTP);
 
 router.post('/logout', logout);
 

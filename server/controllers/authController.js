@@ -1,6 +1,9 @@
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const OTPModel = require('../models/otp');
+const crypto = require('crypto');
 
 // Test endpoint
 const test = (req, res) => {
@@ -10,10 +13,10 @@ const test = (req, res) => {
 // Register endpoint
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, confirmPassword, phone } = req.body;
+        const { name, email, password, confirmPassword, phone, otpMethod } = req.body;
 
         // Validate input
-        if (!name || !email || !password || !confirmPassword || !phone) {
+        if (!name || !email || !password || !confirmPassword || !phone || !otpMethod) {
             return res.json({ error: 'All the fields are required' });
         }
       
@@ -45,14 +48,70 @@ const registerUser = async (req, res) => {
     });
 
     // Return user details (excluding password)
-    const { password: _, ...userWithoutPassword } = user.toObject();
-    res.json(userWithoutPassword);
+    //const { password: _, ...userWithoutPassword } = user.toObject();
+    //res.json(userWithoutPassword);
+
+    // Generate OTP
+    const otp = crypto.randomInt(100000, 999999).toString(); // Generate a 6-digit OTP
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
+    await OTPModel.create({ userId: user._id, otp, expiresAt });
+
+    // Send OTP based on otpMethod (email or phone)
+    if (otpMethod === 'email') {
+      // Sending OTP via email
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465, // or 587 for TLS
+        secure: true, // true for port 465, false for 587
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+      
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Your OTP Code',
+        text: `Your OTP code is: ${otp}`
+      };
+
+      await transporter.sendMail(mailOptions);
+    } else {
+      // Handle sending OTP via SMS (you need a 3rd-party SMS API like Twilio)
+      // Example: await sendSMS(phone, `Your OTP code is: ${otp}`);
+    }
+
+    res.json({ message: `OTP sent via ${otpMethod}. Check your ${otpMethod === 'email' ? 'email' : 'phone'}.` });
+    
   } catch (error) {
     if (error.code === 11000) { // Duplicate key error code
       return res.json({ error: 'Email or Phone number already in use' });
     }
     console.error(error);
     res.json({ error: 'Server error' });
+  }
+};
+
+// Verify OTP endpoint
+const verifyOTP = async (req, res) => {
+  try {
+    const { email, phone, otp } = req.body;
+
+    const user = await User.findOne({ email }) || await User.findOne({ phone });
+    if (!user) return res.json({ error: 'User not found' });
+
+    const otpRecord = await OTPModel.findOne({ userId: user._id, otp });
+    if (!otpRecord || otpRecord.expiresAt < new Date()) {
+      return res.json({ error: 'Invalid or expired OTP' });
+    }
+
+    await OTPModel.deleteMany({ userId: user._id }); // OTP is valid, delete all OTPs for this user
+    res.json({ message: 'OTP verified successfully' });
+  } catch (err) {
+    console.error(err);
+    res.json({ error: 'An error occurred during OTP verification' });
   }
 };
 
@@ -129,5 +188,6 @@ module.exports = {
     registerUser,
     loginUser,
     logout,
-    getProfile
+    getProfile,
+    verifyOTP
 };

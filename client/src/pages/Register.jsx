@@ -15,24 +15,18 @@ export default function Register() {
     email: '',
     password: '',
     confirmPassword: '',
-    phone: ''
+    phone: '',
+    otpMethod: 'email' // Default to email
   });
 
   const registerUser = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword, phone } = data;
+    const { name, email, password, confirmPassword, phone, otpMethod } = data;
 
     // Trim and validate data
     const trimmedPassword = password.trim();
     const trimmedConfirmPassword = confirmPassword.trim();
     const trimmedPhone = phone.trim();
-
-    console.log("State Password:", password);
-    console.log("State Confirm Password:", confirmPassword);
-    console.log("Trimmed Password:", trimmedPassword);
-    console.log("Trimmed Confirm Password:", trimmedConfirmPassword);
-    console.log("Phone Number:", phone);
-    console.log("Trimmed Phone Number:", trimmedPhone);
 
     // Check if passwords match
     if (trimmedPassword !== trimmedConfirmPassword) {
@@ -59,22 +53,28 @@ export default function Register() {
         email: email.trim(), 
         password: trimmedPassword, 
         confirmPassword: trimmedConfirmPassword,
-        phone: trimmedPhone
+        phone: trimmedPhone,
+        otpMethod
       });
 
       const { data } = response;
       if (data.error) {
         toast.error(data.error);
       } else {
+        // Store email and phone in localStorage for OTP verification
+        localStorage.setItem('email', email.trim());
+        localStorage.setItem('phone', trimmedPhone);
+        
         setData({
           name: '',
           email: '',
           password: '',
           confirmPassword: '',
-          phone: ''
+          phone: '',
+          otpMethod: 'email'
         });
-        toast.success('Registration Successful. Welcome!!');
-        navigate('/login');
+        toast.success('Registration Successful. Check your email/phone for OTP');
+        navigate('/verify-otp');// Redirect to OTP verification page
       }
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
@@ -103,7 +103,7 @@ export default function Register() {
             value={data.email}
             required
             onChange={(e) => setData({ ...data, email: e.target.value })}
-             autoComplete="email"
+            autoComplete="email"
           />
           <IoIosMail className="icon" />
         </div>
@@ -136,6 +136,29 @@ export default function Register() {
             onChange={(e) => setData({ ...data, phone: e.target.value })}
           />
           <IoMdCall className="icon" />
+        </div>
+        <div className="input-box-choice">
+          <p>Select where you want to receive the OTP:</p>
+          <label className="btn-choice-email">
+            <input
+              type='radio'
+              name='otpMethod'
+              value='email'
+              checked={data.otpMethod === 'email'}
+              onChange={(e) => setData({ ...data, otpMethod: e.target.value })}
+            />
+            Email
+          </label>
+          <label className="btn-choice-phone">
+            <input
+              type='radio'
+              name='otpMethod'
+              value='phone'
+              checked={data.otpMethod === 'phone'}
+              onChange={(e) => setData({ ...data, otpMethod: e.target.value })}
+            />
+            Phone
+          </label>
         </div>
         <button type='submit'>Register</button>
         <div className="login-link">

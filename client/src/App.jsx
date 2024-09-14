@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from '../src/components/Navbar';
 import Home from '../src/pages/Home';
 import Register from './pages/Register';
+import VerifyOTP from './pages/VerifyOTP'; // Import your VerifyOTP page
 import Login from './pages/Login';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/register' element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
