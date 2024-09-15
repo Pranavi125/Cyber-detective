@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const OTPModel = require('../models/otp');
 const crypto = require('crypto');
+const twilio = require('twilio');
+
+const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 // Test endpoint
 const test = (req, res) => {
@@ -56,8 +59,10 @@ const registerUser = async (req, res) => {
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
     await OTPModel.create({ userId: user._id, otp, expiresAt });
 
+    console.log("Registering user with phone:", phone);
     // Send OTP based on otpMethod (email or phone)
     if (otpMethod === 'email') {
+      console.log('Sending OTP via email');
       // Sending OTP via email
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -78,10 +83,23 @@ const registerUser = async (req, res) => {
       };
 
       await transporter.sendMail(mailOptions);
-    } else {
-      // Handle sending OTP via SMS (you need a 3rd-party SMS API like Twilio)
-      // Example: await sendSMS(phone, `Your OTP code is: ${otp}`);
+      console.log("OTP sent successfully via email");
+    }else {
+      try{
+
+      console.log('Sending OTP via phone to:', phone);
+      // Send OTP via SMS using Twilio
+      await client.messages.create({
+        body: `Your OTP code is: ${otp}`,
+        from: process.env.TWILIO_PHONE_NUMBER, // Your Twilio phone number
+        to: '+919246368451' // Ensure phone number is in E.164 format
+      });
+      console.log("OTP sent successfully via phone");
+    }catch (twilioError) {
+      console.error("Twilio Error:", twilioError);
+      return res.json({ error: 'Failed to send OTP via SMS. Please try again later.' });
     }
+  }
 
     res.json({ message: `OTP sent via ${otpMethod}. Check your ${otpMethod === 'email' ? 'email' : 'phone'}.` });
     
@@ -89,7 +107,8 @@ const registerUser = async (req, res) => {
     if (error.code === 11000) { // Duplicate key error code
       return res.json({ error: 'Email or Phone number already in use' });
     }
-    console.error(error);
+    console.error('Error');
+    console.error('Error during registration:', error);
     res.json({ error: 'Server error' });
   }
 };
@@ -97,9 +116,12 @@ const registerUser = async (req, res) => {
 // Verify OTP endpoint
 const verifyOTP = async (req, res) => {
   try {
-    const { email, phone, otp } = req.body;
+    const { otp, email, phone } = req.body;
 
-    const user = await User.findOne({ email }) || await User.findOne({ phone });
+
+    if (!email || !phone) return res.json({ error: 'User information not found' });
+
+    const user = await User.findOne({ email, phone });
     if (!user) return res.json({ error: 'User not found' });
 
     const otpRecord = await OTPModel.findOne({ userId: user._id, otp });
