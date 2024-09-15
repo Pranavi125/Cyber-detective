@@ -118,10 +118,16 @@ const verifyOTP = async (req, res) => {
   try {
     const { otp, email, phone } = req.body;
 
+    console.log('Received OTP:', otp);
+    console.log('Received Email:', email);
+    console.log('Received Phone:', phone);
 
     if (!email || !phone) return res.json({ error: 'User information not found' });
 
     const user = await User.findOne({ email, phone });
+
+    console.log('Found User:', user);
+
     if (!user) return res.json({ error: 'User not found' });
 
     const otpRecord = await OTPModel.findOne({ userId: user._id, otp });
@@ -132,7 +138,7 @@ const verifyOTP = async (req, res) => {
     await OTPModel.deleteMany({ userId: user._id }); // OTP is valid, delete all OTPs for this user
     res.json({ message: 'OTP verified successfully' });
   } catch (err) {
-    console.error(err);
+    console.error('Error during OTP verification:', err);
     res.json({ error: 'An error occurred during OTP verification' });
   }
 };
