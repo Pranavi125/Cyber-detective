@@ -47,14 +47,14 @@ const registerUser = async (req, res) => {
         return res.json({ error: 'Phone number is already taken' });
       }
 
-    // Hash password and create user
-    const hashedPassword = await hashPassword(trimmedPassword);
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      phone: trimmedPhone
-    });
+      // Create user and hash password
+      const hashedPassword = await hashPassword(trimmedPassword);
+      const user = await User.create({
+          name,
+          email,
+          password: hashedPassword,
+          phone: trimmedPhone,
+      });
 
     // Return user details (excluding password)
     //const { password: _, ...userWithoutPassword } = user.toObject();
@@ -68,27 +68,29 @@ const registerUser = async (req, res) => {
     console.log('Registering user with phone:', trimmedPhone);
     console.log('Sending OTP to phone:', `+91${trimmedPhone}`);
 
+
     // Send OTP based on otpMethod (email or phone)
     if (otpMethod === 'email') {
       console.log('Sending OTP via email');
       // Sending OTP via email
       const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465, // or 587 for TLS
-        secure: true, // true for port 465, false for 587
+        service: 'gmail',
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
         },
+        secure: true,
+        port: 465, 
       });
       
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: email,
+        to: email,  // Dynamic recipient
         subject: 'Your OTP Code',
         text: `Your OTP code is: ${otp}`
       };
+      
 
       await transporter.sendMail(mailOptions);
       console.log("OTP sent successfully via email");
@@ -102,11 +104,19 @@ const registerUser = async (req, res) => {
         from: process.env.TWILIO_PHONE_NUMBER,
         to: fullPhoneNumber,
     });
-    console.log('OTP sent successfully via phone');
+     // Automatically create and verify Caller ID
+     try {
+      await client.incomingPhoneNumbers.create({
+          phoneNumber: fullPhoneNumber,
+          friendlyName: `Verified Caller ID for ${trimmedPhone}`
+      });
+      console.log('Caller ID created successfully');
+  } catch (err) {
+      console.error('Error creating Caller ID:', err);
   }
-
+}
     res.json({ message: `OTP sent via ${otpMethod}. Check your ${otpMethod === 'email' ? 'email' : 'phone'}.` });
-    
+
   } catch (error) {
     if (error.code === 11000) { // Duplicate key error code
       return res.json({ error: 'Email or Phone number already in use' });

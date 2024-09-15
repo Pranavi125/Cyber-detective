@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from 'axios'
 import { toast } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import './Login.css'; // Adjust the path as necessary
@@ -47,12 +48,13 @@ export default function Login() {
         <div className="input-box">
           <input
             type='text'
-            placeholder='Name'
+            placeholder='Username'
             autoComplete="name"
             required
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
           />
+          <FaUser className="icon" />
         </div>
         <div className="input-box">
           <input
