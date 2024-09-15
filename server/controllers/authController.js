@@ -18,21 +18,27 @@ const registerUser = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, phone, otpMethod } = req.body;
 
-        // Validate input
-        if (!name || !email || !password || !confirmPassword || !phone || !otpMethod) {
-            return res.json({ error: 'All the fields are required' });
-        }
-      
-      if (password.length < 6) {
+      // Trim values
+      const trimmedPhone = phone.trim();
+      const trimmedPassword = password.trim();
+      const trimmedConfirmPassword = confirmPassword.trim();
+
+
+      // Validate input
+      if (!name || !email || !password || !confirmPassword || !phone || !otpMethod) {
+          return res.json({ error: 'All the fields are required' });
+      }
+
+      if (trimmedPassword.length < 6) {
         return res.json({ error: 'Password must be at least 6 characters long' });
       }
       
-    if (password !== confirmPassword) return res.json({ error: 'Passwords do not match' });
-    if (!/^\d{10}$/.test(phone)) return res.json({ error: 'Phone number must be exactly 10 digits long' });
+    if (trimmedPassword !== trimmedConfirmPassword) return res.json({ error: 'Passwords do not match' });
+    if (!/^\d{10}$/.test(trimmedPhone)) return res.json({ error: 'Phone number must be exactly 10 digits long' });
     
     // Check if email is already registered
     const existingUserByEmail = await User.findOne({ email });
-    const existingUserByPhone = await User.findOne({ phone });
+    const existingUserByPhone = await User.findOne({ phone: trimmedPhone });
 
     if (existingUserByEmail) {
         return res.json({ error: 'Email is already taken' });
@@ -42,12 +48,12 @@ const registerUser = async (req, res) => {
       }
 
     // Hash password and create user
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashPassword(trimmedPassword);
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      phone
+      phone: trimmedPhone
     });
 
     // Return user details (excluding password)
@@ -59,7 +65,9 @@ const registerUser = async (req, res) => {
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
     await OTPModel.create({ userId: user._id, otp, expiresAt });
 
-    console.log("Registering user with phone:", phone);
+    console.log('Registering user with phone:', trimmedPhone);
+    console.log('Sending OTP to phone:', `+91${trimmedPhone}`);
+
     // Send OTP based on otpMethod (email or phone)
     if (otpMethod === 'email') {
       console.log('Sending OTP via email');
@@ -85,20 +93,16 @@ const registerUser = async (req, res) => {
       await transporter.sendMail(mailOptions);
       console.log("OTP sent successfully via email");
     }else {
-      try{
+      const fullPhoneNumber = `+91${trimmedPhone}`; // Add country code dynamically
+      console.log('Sending OTP to:', fullPhoneNumber);
 
-      console.log('Sending OTP via phone to:', phone);
-      // Send OTP via SMS using Twilio
+      // SMS OTP
       await client.messages.create({
         body: `Your OTP code is: ${otp}`,
-        from: process.env.TWILIO_PHONE_NUMBER, // Your Twilio phone number
-        to: '+919246368451' // Ensure phone number is in E.164 format
-      });
-      console.log("OTP sent successfully via phone");
-    }catch (twilioError) {
-      console.error("Twilio Error:", twilioError);
-      return res.json({ error: 'Failed to send OTP via SMS. Please try again later.' });
-    }
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: fullPhoneNumber,
+    });
+    console.log('OTP sent successfully via phone');
   }
 
     res.json({ message: `OTP sent via ${otpMethod}. Check your ${otpMethod === 'email' ? 'email' : 'phone'}.` });

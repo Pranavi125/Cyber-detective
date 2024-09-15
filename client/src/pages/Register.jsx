@@ -64,6 +64,10 @@ export default function Register() {
         // Store email and phone in localStorage for OTP verification
         localStorage.setItem('email', email.trim());
         localStorage.setItem('phone', trimmedPhone);
+        if (localStorage.getItem('phone') !== trimmedPhone) {
+          localStorage.setItem('phone', trimmedPhone);
+        }
+        
         
         setData({
           name: '',

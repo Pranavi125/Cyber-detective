@@ -14,7 +14,8 @@ export default function VerifyOTP() {
      // Retrieve email and phone from localStorage (or context if you have it)
      const email = localStorage.getItem('email'); // You can store email during registration
      const phone = localStorage.getItem('phone'); // You can store phone during registration
- 
+     console.log('Phone from localStorage:', phone);
+
      if (!email || !phone) {
        toast.error('Missing email or phone number. Please register again.');
        return;
