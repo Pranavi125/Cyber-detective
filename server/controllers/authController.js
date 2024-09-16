@@ -87,8 +87,8 @@ const registerUser = async (req, res) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,  // Dynamic recipient
-        subject: 'Your OTP Code',
-        text: `Your OTP code is: ${otp}`
+        subject: 'OTP for registration',
+        text: `Dear user, it looks like you are trying to register in CyberDetection using your email. the OTP code is: ${otp}`
       };
       
 
@@ -225,11 +225,98 @@ const getProfile = (req, res) => {
     }
   };
 
+// Forgot Password endpoint
+const forgotPassword = async (req, res) => {
+  try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+
+      if (!user) return res.json({ error: 'User with this email does not exist' });
+
+      // Generate reset token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1hour expiry
+
+       // Log the generated token and expiry
+      console.log('Generated Reset Token:', resetToken);
+      console.log('Reset Token Expiry:', resetTokenExpiry);
+      
+      // Store reset token and expiry in the user record
+      user.resetToken = resetToken;
+      user.resetTokenExpiry = resetTokenExpiry;
+      await user.save();
+
+      const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+      const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS,
+          },
+          secure: true,
+          port: 465,
+      });
+
+      const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: 'Password Reset Request',
+          text: `You requested a password reset. Click the link below to reset your password:\n\n${resetLink}\n\nIf you did not request this, please ignore this email.`,
+      };
+
+      await transporter.sendMail(mailOptions);
+      res.json({ message: 'Password reset link sent to your email' });
+
+  } catch (error) {
+    console.error('Error during forgot password process:', error);
+      res.json({ error: 'Server error' });
+  }
+};
+
+// Reset Password endpoint
+const resetPassword = async (req, res) => {
+  try {
+      const { resetToken, newPassword } = req.body;
+      console.log('Received Reset Token:', resetToken); // Log received token
+
+      const user = await User.findOne({ 
+        resetToken, 
+        resetTokenExpiry: { $gt: new Date() },
+      });
+
+      // Log the user found and token validity
+    if (user) {
+      console.log('User Found:', user);
+      console.log('Token Valid Until:', user.resetTokenExpiry);
+      console.log('Current Time:', new Date());
+    } else {
+      console.log('Invalid or expired token');
+    }
+
+      if (!user) return res.json({ error: 'Invalid or expired reset token' });
+
+      const hashedPassword = await hashPassword(newPassword);
+      user.password = hashedPassword;
+      user.resetToken = undefined; // Clear reset token
+      user.resetTokenExpiry = undefined; // Clear reset token expiry
+      await user.save();
+
+      res.json({ message: 'Password successfully reset' });
+
+  } catch (error) {
+      console.error('Error during reset password process:', error);
+      res.json({ error: 'Server error' });
+  }
+};
+
+
 module.exports = {
     test,
     registerUser,
     loginUser,
     logout,
     getProfile,
-    verifyOTP
+    verifyOTP,
+    forgotPassword,
+    resetPassword,
 };

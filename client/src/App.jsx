@@ -5,6 +5,8 @@ import Home from '../src/pages/Home';
 import Register from './pages/Register';
 import VerifyOTP from './pages/VerifyOTP'; // Import your VerifyOTP page
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword'; 
+import ResetPassword from './pages/ResetPassword';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import  UserContextProvider  from '../context/userContext';
@@ -15,11 +17,13 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const location = useLocation();  // Get the current location (URL path)
+  
 
   return (
     <UserContextProvider>
       {/* Conditionally render the Navbar based on the current route */}
-      {location.pathname !== '/dashboard' && <Navbar />}
+      {/* Navbar will not appear on reset-password page */}
+      {location.pathname !== '/dashboard' && location.pathname.indexOf('/reset-password') === -1 && <Navbar />}
       
       <Toaster position='top-center' toastOptions={{ duration: 2000 }} />
       
@@ -28,6 +32,8 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path='/login' element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
     </UserContextProvider>

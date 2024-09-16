@@ -80,7 +80,7 @@ export default function Login() {
         </div>
         <div className="remember-forget">
           <label><input type="checkbox" />Remember me</label>
-          <a href="#">Forgot Password?</a>
+          <a href="/forgot-password">Forgot Password?</a>
         </div>
         <button type="submit">Login</button>
         <div className="register-link">

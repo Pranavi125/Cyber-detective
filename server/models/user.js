@@ -22,6 +22,12 @@ const userSchema = new Schema({
         required: true,
         match: /^\d{10}$/ // Ensure phone number is exactly 10 digits
     },
+    resetToken: {
+        type: String,
+    },
+    resetTokenExpiry: {
+        type: Date,
+    },
     verified: {
         type: Boolean,
         default: false // Default to false, assuming email verification might be required
