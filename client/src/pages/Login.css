@@ -8,6 +8,7 @@
     padding: 30px 40px;
 }
 .wrapper h1{
+    color: #ddc3dd;
     font-size: 36px;
     text-align: center;
 }
@@ -58,7 +59,7 @@
 }
 
 .remember-forget a{
-    color: #ffffff;
+    color:  #fff9ff;
     margin-right: 20px;
     text-decoration: none;
 }
@@ -82,7 +83,7 @@
 }
 
 .wrapper .remember-link {
-    font-size: 14.5px;
+    font-size: 17px;
     text-align: center;
     margin-top: 20px 0 15px;
 }
@@ -93,7 +94,8 @@
 .register-link p a {
     color: #fff;
     text-decoration: none;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 100;
 }
 
 .register-link p a:hover {
