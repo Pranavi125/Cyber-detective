@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import  UserContextProvider  from '../context/userContext';
 import Dashboard from './pages/Dashboard';
+import ScrapedArticles from './pages/ScrapedArticle';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -35,6 +36,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path="/scraped-articles" element={<ScrapedArticles />} />
       </Routes>
     </UserContextProvider>
   );

@@ -57,3 +57,59 @@
 .nav-button:hover {
     background-color: #27293e; /* Slightly darker red on hover */
 }
+/* Styling for scrape section */
+.scrape-section {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.url-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.scrape-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.scrape-button:hover {
+    background-color: #45a049;
+}
+
+.scraped-articles {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.scraped-articles h2 {
+    color: #fff;
+}
+
+.scraped-articles ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.scraped-articles li {
+    margin: 10px 0;
+}
+
+.scraped-articles a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.scraped-articles a:hover {
+    text-decoration: underline;
+}

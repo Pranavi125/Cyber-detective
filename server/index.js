@@ -5,6 +5,7 @@ const {mongoose} = require('mongoose')
 const cookieParser = require('cookie-parser')
 const authRoutes = require('./routes/authRoutes'); // Adjust the path as needed
 
+
 const app = express();
 //database connection
 mongoose.connect(process.env.MONGO_URL)
