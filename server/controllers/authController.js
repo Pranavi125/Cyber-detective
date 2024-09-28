@@ -348,12 +348,6 @@ const scrapeArticles = (req, res) => {
     });
 };
 
-
-
-
-
-
-
 module.exports = {
     test,
     registerUser,

@@ -72,4 +72,7 @@ if __name__ == "__main__":
     site = sys.argv[1]
     articles = scrape_articles(site)
 
-    print(json.dumps(articles))
+    if 'error' in articles:
+        print(json.dumps({"error": articles['error']}))  # Send error if there's one
+    else:
+        print(json.dumps(articles))  # Send scraped articles
