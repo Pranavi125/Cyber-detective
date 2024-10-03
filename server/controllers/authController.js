@@ -310,43 +310,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const { exec } = require('child_process');
-// Function to handle scraping articles
-
-const scrapeArticles = (req, res) => {
-    const url = req.body.url;
-
-    if (!url) {
-        console.log("No URL provided.");
-        return res.status(400).json({ success: false, message: 'URL is required.' });
-    }
-
-    console.log(`Scraping URL: ${url}`);
-
-    exec(`python3 scraper.py ${url}`,{ timeout: 10000 }, (error, stdout, stderr) => {
-        if (error) {
-          if (error.killed) {
-            console.error("Python script timed out.");
-            return res.status(500).json({ success: false, message: 'Scraping timed out.' });
-        }
-            console.error(`Error executing Python script: ${error.message}`);
-            return res.status(500).json({ success: false, message: 'Failed to scrape articles.' });
-        }
-
-        console.log("Python script executed successfully.");
-        console.log("Raw output:", stdout);
-
-
-        try {
-            const scrapedData = JSON.parse(stdout);
-            console.log("Scraped data parsed successfully.");
-            return res.json({ success: true, articles: scrapedData });
-        } catch (parseError) {
-            console.error(`Error parsing scraped data: ${parseError.message}`);
-            return res.status(500).json({ success: false, message: 'Failed to parse scraped articles.' });
-        }
-    });
-};
 
 module.exports = {
     test,
@@ -357,5 +320,4 @@ module.exports = {
     verifyOTP,
     forgotPassword,
     resetPassword,
-    scrapeArticles,
 };

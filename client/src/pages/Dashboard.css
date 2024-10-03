@@ -2,16 +2,15 @@
 
 /* General styling for the dashboard container */
 .dashboard {
-    text-align: center;
+    text-align: center; /* Centers text */
     color: white; /* Sets text color for the entire dashboard */
+    padding: 20px; /* Adds padding around the dashboard */
 }
 
 /* Styling for the dashboard heading */
 .dashboard h1 {
-    color: #fff; /* Sets the color of the heading text */
-    width: 200px;
-    height: 300px; /* Adds height to the heading */
-    margin: 0 auto; /* Centers the heading */
+    color: #61dafb; /* Sets the color of the heading text */
+    margin: 20px 0; /* Adds margin around the heading */
 }
 
 /* Updated Navbar styling */
@@ -20,96 +19,68 @@
     justify-content: flex-end; /* Align navbar items to the right */
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    position: absolute;
+    position: absolute; /* Positions navbar at the top */
     top: 0;
     left: 0;
     width: 100%;
 }
 
-/* Styling for the navbar links (Login, Register, Logout) */
-.nav-button, .nav-link {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    font-size: 18px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    cursor: pointer; /* Changes cursor to pointer on hover */
-}
-
-/* Add hover effect for the links and button */
-.nav-link:hover, .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Light transparent hover */
-}
-
-.nav-link:active, .nav-button:active {
-    background-color: rgba(255, 255, 255, 0.4); /* Slightly darker active state */
-}
-
-/* Specific styling for the logout button */
+/* Styling for the navbar links (Logout) */
 .nav-button {
-    background-color: rgba(255, 255, 255, 0.538);; /* Red background for logout button */
-    padding: 10px 20px; /* Adjust padding for the button */
+    color: white; /* Sets text color for the button */
+    text-decoration: none; /* No underline */
+    margin-left: 20px; /* Space between navbar items */
+    font-size: 18px; /* Font size */
+    padding: 10px 15px; /* Padding around the button */
+    border-radius: 5px; /* Rounded corners */
+    background-color: rgba(255, 255, 255, 0.538); /* Light background for button */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    cursor: pointer; /* Changes cursor to pointer on hover */
 }
 
 /* Hover effect for the logout button */
 .nav-button:hover {
-    background-color: #27293e; /* Slightly darker red on hover */
-}
-/* Styling for scrape section */
-.scrape-section {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #27293e; /* Slightly darker background on hover */
 }
 
-.url-input {
-    width: 300px;
-    padding: 10px;
-    font-size: 16px;
-    margin-right: 10px;
+/* Styling for the search bar section */
+.search-bar {
+    margin: 20px auto; /* Centers the search bar */
+    display: flex; /* Flexbox for input and button alignment */
+    justify-content: center; /* Centers items */
+    align-items: center; /* Aligns items vertically */
 }
 
-.scrape-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+/* Styling for the input field */
+.search-bar input {
+    width: 300px; /* Sets width for the input */
+    padding: 10px; /* Padding inside the input */
+    font-size: 16px; /* Font size */
+    margin-right: 10px; /* Space between input and button */
+    border-radius: 5px; /* Rounded corners */
+    border: none; /* No border */
+    background-color: rgba(255, 255, 255, 0.2); /* Light background for input */
+    color: white; /* White text */
 }
 
-.scrape-button:hover {
-    background-color: #45a049;
+/* Styling for the scrape button */
+.search-bar button {
+    padding: 10px 20px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.3s ease; /* Smooth transition */
 }
 
-.scraped-articles {
-    margin-top: 30px;
-    text-align: left;
+/* Hover effect for the scrape button */
+.search-bar button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
 }
 
-.scraped-articles h2 {
-    color: #fff;
-}
-
-.scraped-articles ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.scraped-articles li {
-    margin: 10px 0;
-}
-
-.scraped-articles a {
-    color: #61dafb;
-    text-decoration: none;
-}
-
-.scraped-articles a:hover {
-    text-decoration: underline;
+/* Styling for error messages */
+.search-bar p {
+    color: red; /* Red color for error messages */
 }

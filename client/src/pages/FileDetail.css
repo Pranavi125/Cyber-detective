@@ -1,0 +1,26 @@
+/* FileDetails.css */
+
+/* General styling for the file detail page */
+.file-detail {
+    text-align: center; /* Centers the text on the page */
+    color: white; /* Sets the text color to white */
+    padding: 20px; /* Adds padding around the content */
+}
+
+/* Styling for the file name heading */
+.file-detail h2 {
+    color: #61dafb; /* Sets the color for the file name */
+}
+
+/* Styling for the content area */
+.file-detail pre {
+    background-color: rgba(255, 255, 255, 0.1); /* Light background for code content */
+    color: white; /* White text color */
+    padding: 10px; /* Adds padding around the text */
+    border-radius: 5px; /* Rounded corners for the content area */
+    overflow: auto; /* Enables scrolling for overflow content */
+    white-space: pre-wrap; /* Preserves whitespace and wraps text */
+    max-height: 80vh; /* Limits the height of the content area */
+    margin: 0 auto; /* Centers the content */
+    width: 80%; /* Sets a width for the content area */
+}
