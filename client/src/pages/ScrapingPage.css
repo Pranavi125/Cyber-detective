@@ -1,0 +1,96 @@
+/* ScrapingPage.css */
+
+.scraping-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    min-width: 60vh;
+    background-color: #f4f7fa;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    /* Updated box-shadow */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Add a hover effect for an even deeper shadow */
+.scraping-page form:hover {
+    box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.scraping-page h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.scraping-page form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.scraping-page input[type="url"] {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.scraping-page input[type="url"]:focus {
+    border-color: #08ad29;
+    outline: none;
+}
+
+.scraping-page button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    color: white;
+    background-color: #21c945;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.scraping-page button:hover {
+    background-color: #82c595;
+}
+
+.scraping-page button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.scraping-page p {
+    margin-top: 1rem;
+    color: red;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .scraping-page h1 {
+        font-size: 1.5rem;
+    }
+
+    .scraping-page form {
+        padding: 1.5rem;
+    }
+
+    .scraping-page button {
+        padding: 10px;
+    }
+}

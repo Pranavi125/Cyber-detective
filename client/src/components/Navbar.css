@@ -50,7 +50,7 @@
   .navbar-left a:hover,
   .login-navbar-right a:hover,
   .register-navbar-right a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(66, 24, 95, 0.2);
     border-radius: 5px;
     color: #f0f0f0;
   }

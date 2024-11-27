@@ -9,12 +9,13 @@
 
 /* Styling for the file name heading */
 .file-detail h2 {
-    color: #61dafb; /* Sets the color for the file name */
+    color: #491452; /* Sets the color for the file name */
 }
 
 /* Styling for the content area */
 .file-detail pre {
-    background-color: rgba(255, 255, 255, 0.1); /* Light background for code content */
+    font-size: 20px;
+    background-color: rgb(85, 22, 83); /* Light background for code content */
     color: white; /* White text color */
     padding: 10px; /* Adds padding around the text */
     border-radius: 5px; /* Rounded corners for the content area */

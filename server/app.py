@@ -5,11 +5,15 @@ from newspaper import Article, Config
 import re
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import joblib
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.preprocessing import MultiLabelBinarizer
 from pymongo import MongoClient
 from datetime import datetime, timezone
 
-app = Flask(_name_)
-CORS(app)
+app = Flask(__name__)
+CORS(app, supports_credentials=True)
+
 
 # MongoDB setup
 client = MongoClient("mongodb://localhost:27017/")
@@ -44,7 +48,7 @@ def scrape_articles(site):
             article.download()
             article.parse()
 
-            # Check if any key term exists in the article text without using .lower()
+            # Check if any key term exists in the article text
             if any(term in article.text for term in key_terms):
                 title = sanitize_filename(article.title)
                 file_path = os.path.join(save_folder, f"{title}.txt")
@@ -94,7 +98,6 @@ def get_scraped_files():
     files = collection.find({}, {"file_name": 1, "url": 1})
     files_list = [{'file_name': file['file_name'], 'url': file['url']} for file in files]
     return jsonify({'articles': files_list})
-    # //return jsonify({'articles': list(files)})
 
 @app.route('/api/scraped-files/<file_name>', methods=['GET'])
 def get_file_content(file_name):
@@ -103,5 +106,57 @@ def get_file_content(file_name):
         return jsonify({'scraped_content': file['scraped_content']})
     return jsonify({'error': 'File not found'}), 404
 
-if _name_ == "_main_":
-    app.run(debug=True, port=8000)
+
+
+
+# Paths to the saved .pkl files
+output_dir = "C:/Users/Tukaram/Desktop/3-1 ps/mlmodel"  # Update with your directory
+model_path = os.path.join(output_dir, "xgboost_model.pkl")
+vectorizer_path = os.path.join(output_dir, "vectorizer.pkl")
+mlb_path = os.path.join(output_dir, "mlb.pkl")
+
+# Load the pre-trained model, vectorizer, and MultiLabelBinarizer
+model = joblib.load(model_path)
+vectorizer = joblib.load(vectorizer_path)
+mlb = joblib.load(mlb_path)
+
+def predict_word_mapping_single_entity(input_text, model, vectorizer, mlb):
+   
+    # Split the input text into words
+    words = input_text.split()
+
+    # Initialize the word-to-entity map
+    word_entity_map = {}
+
+    for word in words:
+        # Preprocess each word (convert to vector)
+        input_vector = vectorizer.transform([word]).toarray()
+
+        # Predict probabilities for the word
+        pred_probs = model.predict_proba(input_vector)
+
+        # Get the entity with the highest probability
+        max_prob_index = pred_probs.argmax(axis=1)[0]
+        predicted_entity = mlb.classes_[max_prob_index]
+
+        # Map the word to the most relevant entity
+        word_entity_map[word] = predicted_entity
+
+    return word_entity_map
+
+@app.route('/api/classify', methods=['POST'])
+def classify_text():
+    data = request.get_json()
+    text = data.get('text')
+
+    if not text:
+        return jsonify({'error': 'No text provided'}), 400
+
+    # Predict the word-to-entity mapping
+    word_to_entity_map = predict_word_mapping_single_entity(text, model, vectorizer, mlb)
+
+    return jsonify({'word_entity_mapping': word_to_entity_map})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
+

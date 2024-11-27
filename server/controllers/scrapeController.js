@@ -6,7 +6,7 @@ const ScrapedFile = require('../models/ScrapedFile');
 exports.scrapeWebsite = async (req, res) => {
     const { website_url } = req.body;
     if (!website_url) {
-        return res.status(400).json({ error: 'Website URL is required' });
+        return res.json({ error: 'Website URL is required' });
     }
     try {
         // Clear previous files from MongoDB
@@ -22,7 +22,7 @@ exports.scrapeWebsite = async (req, res) => {
 
         // If textContent is empty
         if (!textContent) {
-            return res.status(400).json({ error: 'No content found on the page' });
+            return res.json({ error: 'No content found on the page' });
         }
 
         // Save the main page content
@@ -46,14 +46,14 @@ exports.scrapeWebsite = async (req, res) => {
         await scrapeMultipleLinks(uniqueLinks); // Scrape found unique links
 
         // Return response with saved main file info
-        res.status(200).json({
+        res.json({
             file_name: mainFile.file_name,
             url: mainFile.url,
             scraped_content: mainFile.scraped_content 
         });
     } catch (error) {
         console.error('Error scraping website:', error.message);
-        res.status(500).json({ error: 'Failed to scrape the website' });
+        res.json({ error: 'Failed to scrape the website' });
     }
 };
 
@@ -96,10 +96,10 @@ const scrapeMultipleLinks = async (links) => {
 exports.getAllScrapedFiles = async (req, res) => {
     try {
         const files = await ScrapedFile.find();
-        res.status(200).json(files);
+        res.json(files);
     } catch (error) {
         console.error('Error fetching scraped files:', error);
-        res.status(500).json({ error: 'Failed to fetch scraped files' });
+        res.json({ error: 'Failed to fetch scraped files' });
     }
 };
 
@@ -114,6 +114,6 @@ exports.getScrapedFileContent = async (req, res) => {
         res.json({ scraped_content: file.scraped_content });
     } catch (error) {
         console.error('Error fetching file content:', error);
-        res.status(500).json({ error: 'Failed to fetch file content' });
+        res.json({ error: 'Failed to fetch file content' });
     }
 };
