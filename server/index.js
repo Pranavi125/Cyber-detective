@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');  // Ensure path is required
+const fs = require('fs');  // Ensure fs is required
 const dotenv = require('dotenv').config()
 const cors = require('cors');
 const {mongoose} = require('mongoose')
@@ -23,6 +25,35 @@ app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 // Use auth routes
 app.use('/auth', authRoutes);
 app.use('/scrape', scrapeRoutes);
+
+
+// Serve the JSON file directly
+app.get('/api/dataset', (req, res) => {
+  const filePath = path.join(__dirname, 'datasets', 'FinalMergedDatabase.json');
+
+  // Check if the JSON file exists
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'File not found' });
+  }
+
+  // Read the JSON file
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to read the file' });
+    }
+
+    // Parse and send the JSON data
+    try {
+      const jsonData = JSON.parse(data);
+      res.json(jsonData);
+    } catch (err) {
+      return res.status(500).json({ error: 'Invalid JSON file' });
+    }
+  });
+});
+
+
+
 
 // New route for interacting with the ML model
 app.post('/api/ml/classify', async (req, res) => {

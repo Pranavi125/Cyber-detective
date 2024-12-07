@@ -16,6 +16,7 @@ import ScrapedFiles from './pages/ScrapedFiles';
 import FileDetail from './pages/FileDetail';
 import AttributionClassification from './pages/AttributionClassification';  // Import the Classification component
 import DistilBertQA from './pages/DistilBertQA'; // Import the DistilBertQA page
+import ViewDataset from './pages/ViewDataset'; // Import your new ViewDataset component
 
 
 axios.defaults.baseURL='http://localhost:8000';
@@ -43,6 +44,7 @@ function App() {
          <Route path="/scraped-files" element={<ScrapedFiles />} />
          <Route path="/classification" element={<AttributionClassification />} />
          <Route path="/distilbert-qa" element={<DistilBertQA />} />
+         <Route path="/view-dataset" element={<ViewDataset />} />
 
       </Routes>
     </UserContextProvider>

@@ -35,9 +35,15 @@ export default function Dashboard() {
     const handleclassifyClick = () => {
         navigate('/classification');  // Navigate to the scraping page
     };
-     // Navigate to the DistilBERT QA model page
-     const handleDistilBertClick = () => {
+
+    // Navigate to the DistilBERT QA model page
+    const handleDistilBertClick = () => {
         navigate('/distilbert-qa'); // Navigate to the DistilBertQA page
+    };
+
+    // Navigate to the "View Dataset" page
+    const handleViewDatasetClick = () => {
+        navigate('/view-dataset');  // Navigate to the view dataset page
     };
 
     return (
@@ -50,15 +56,18 @@ export default function Dashboard() {
                 <h1>RAG Cyber Detection - G.Pavitra, 22BD1A6717</h1>
             </div>
             <form className='alloptions'>
-            <div className="options">
-                <button className="option-button" onClick={handleScrapingClick}>Scraping</button>
-            </div>
-            <div className="options">
-                <button className="option-button" onClick={handleclassifyClick}>Attribution Annotation/Classification</button>
-            </div>
-            <div className="options">
-                <button className="option-button" onClick={handleDistilBertClick}>DistilBERT QA Model</button>
-            </div>
+                <div className="options">
+                    <button className="option-button" onClick={handleScrapingClick}>Scraping</button>
+                </div>
+                <div className="options">
+                    <button className="option-button" onClick={handleclassifyClick}>Attribution Annotation/Classification</button>
+                </div>
+                <div className="options">
+                    <button className="option-button" onClick={handleDistilBertClick}>DistilBERT QA Model</button>
+                </div>
+                <div className="options">
+                    <button className="option-button" onClick={handleViewDatasetClick}>View Dataset</button>
+                </div>
             </form>
         </div>
     );
