@@ -9,12 +9,13 @@ const ExtractedContentPage = () => {
     return (
         <div className="extracted-content-page">
             <h1>Extracted Content</h1>
-            <p><strong>File:</strong> {filename}</p>
+            <p><strong>File:</strong> {filename}</p> {/* Display the filename here */}
             <div className="content-box">
-                <pre>{content}</pre>
+                <pre>{content}</pre> {/* Display the extracted content here */}
             </div>
         </div>
     );
 };
+
 
 export default ExtractedContentPage;

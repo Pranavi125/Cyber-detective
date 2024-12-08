@@ -8,9 +8,9 @@ const ExtractPage = () => {
     const handleExtract = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("authToken");
-
+    
         try {
-            const response = await fetch('http://localhost:8000/api/extract', {  
+            const response = await fetch('http://localhost:8000/api/extract', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -18,14 +18,15 @@ const ExtractPage = () => {
                 },
                 body: JSON.stringify({ url }),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
-
+    
             const data = await response.json();
-
+    
             if (data.success) {
+                // Pass both the content and the filename to the ExtractedContentPage
                 navigate('/extracted-content', { state: { content: data.content, filename: data.filename } });
             } else {
                 alert('Extraction failed: ' + data.message);
@@ -35,6 +36,7 @@ const ExtractPage = () => {
             alert('Error occurred during extraction');
         }
     };
+    
 
     return (
         <div className="extract-page">
