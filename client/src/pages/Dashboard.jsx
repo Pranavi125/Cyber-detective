@@ -46,6 +46,12 @@ export default function Dashboard() {
         navigate('/view-dataset');  // Navigate to the view dataset page
     };
 
+
+    // Navigate to the Extract Data page
+    const handleExtractDataClick = () => {
+        navigate('/extract-data');  // Navigate to the new extract data page
+    };
+
     return (
         <div className="dashboard">
             <nav className="navbar">
@@ -57,16 +63,19 @@ export default function Dashboard() {
             </div>
             <form className='alloptions'>
                 <div className="options">
+                    <button className="option-button" onClick={handleViewDatasetClick}>View Dataset</button>
+                </div>
+                <div className="options">
                     <button className="option-button" onClick={handleScrapingClick}>Scraping</button>
+                </div>
+                <div className="options">
+                    <button className="option-button" onClick={handleExtractDataClick}>Extract Data</button>
                 </div>
                 <div className="options">
                     <button className="option-button" onClick={handleclassifyClick}>Attribution Annotation/Classification</button>
                 </div>
                 <div className="options">
                     <button className="option-button" onClick={handleDistilBertClick}>DistilBERT QA Model</button>
-                </div>
-                <div className="options">
-                    <button className="option-button" onClick={handleViewDatasetClick}>View Dataset</button>
                 </div>
             </form>
         </div>
