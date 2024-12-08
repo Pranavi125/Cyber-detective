@@ -1,8 +1,15 @@
-// server/controllers/extractController.js
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
+
+// Function to clean extracted text
+const cleanText = (text) => {
+  return text
+    .replace(/[^\w\s.,]/g, '')  // Remove special characters except punctuation
+    .replace(/\s+/g, ' ')        // Normalize whitespace
+    .trim();
+};
 
 // Extract content from a URL
 const extractWebsiteContent = async (url) => {
@@ -11,7 +18,9 @@ const extractWebsiteContent = async (url) => {
     const dom = new JSDOM(response.data);
     const paragraphs = dom.window.document.querySelectorAll('p');
     const text = Array.from(paragraphs).map(p => p.textContent).join(' ');
-    return text;
+
+    // Clean the extracted text before returning
+    return cleanText(text);
   } catch (error) {
     throw new Error('Error extracting content: ' + error.message);
   }
