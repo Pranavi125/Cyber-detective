@@ -10,7 +10,7 @@ const DistilBertQA = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/qa', {
+            const response = await fetch('http://localhost:4000/api/qa', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question })
@@ -65,7 +65,7 @@ const DistilBertQA = () => {
             {showDetails && (
                 <div className="details-box">
                     <h4>Details:</h4>
-                    <p>Accuracy: 76.48%</p>
+                    <p>Accuracy: 78.9%</p>
                     <p>BLEU Score: 85.84%</p>
                 </div>
             )}
