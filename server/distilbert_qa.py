@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Load the pre-trained model and tokenizer (qamodel)
-model_dir = 'C:/Users/Tukaram/Desktop/3-1 ps/qamodel'
+model_dir = "C:/Users/Tukaram/Desktop/3-1 ps/cyberdetection/server/qamodel"
 tokenizer = DistilBertTokenizer.from_pretrained(model_dir)
 model = DistilBertForSequenceClassification.from_pretrained(model_dir)
 
@@ -23,7 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
 # Load dataset for mapping labels to answers (if needed)
-qa_data = pd.read_csv("C:/Users/Tukaram/Desktop/3-1 ps/qamodel/CleanedQuestionsAnswersCSV.csv", encoding='ISO-8859-1')
+qa_data = pd.read_csv("C:/Users/Tukaram/Desktop/3-1 ps/cyberdetection/server/qamodel/CleanedQuestionsAnswersCSV.csv", encoding='ISO-8859-1')
 answers = list(qa_data['Ground Truth'].unique())
 answer_to_label = {answer: idx for idx, answer in enumerate(answers)}
 label_to_answer = {idx: answer for answer, idx in answer_to_label.items()}

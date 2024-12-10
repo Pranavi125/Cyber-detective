@@ -66,7 +66,7 @@ const DistilBertQA = () => {
                 <div className="details-box">
                     <h4>Details:</h4>
                     <p>Accuracy: 78.9%</p>
-                    <p>BLEU Score: 85.84%</p>
+                    <p>BLEU Score: 84.84%</p>
                 </div>
             )}
         </div>
