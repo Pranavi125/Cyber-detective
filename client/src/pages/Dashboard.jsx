@@ -28,10 +28,6 @@ export default function Dashboard() {
         }
     };
 
-    // Navigate to the scraping page when clicking the "scraping" button
-    const handleScrapingClick = () => {
-        navigate('/scraping');  // Navigate to the scraping page
-    };
     const handleclassifyClick = () => {
         navigate('/classification');  // Navigate to the scraping page
     };
@@ -64,9 +60,6 @@ export default function Dashboard() {
             <form className='alloptions'>
                 <div className="options">
                     <button className="option-button" onClick={handleViewDatasetClick}>View Dataset</button>
-                </div>
-                <div className="options">
-                    <button className="option-button" onClick={handleScrapingClick}>Scraping</button>
                 </div>
                 <div className="options">
                     <button className="option-button" onClick={handleExtractDataClick}>Extract Data</button>

@@ -11,9 +11,6 @@ import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import UserContextProvider from '../context/userContext';
 import Dashboard from './pages/Dashboard';
-import ScrapingPage from './pages/ScrapingPage';
-import ScrapedFiles from './pages/ScrapedFiles';
-import FileDetail from './pages/FileDetail';
 import AttributionClassification from './pages/AttributionClassification';
 import DistilBertQA from './pages/DistilBertQA';
 import ViewDataset from './pages/ViewDataset';
@@ -39,9 +36,6 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path="/scraping" element={<ScrapingPage />} />
-        <Route path="/file-detail/:filename" element={<FileDetail />} />
-        <Route path="/scraped-files" element={<ScrapedFiles />} />
         <Route path="/classification" element={<AttributionClassification />} />
         <Route path="/distilbert-qa" element={<DistilBertQA />} />
         <Route path="/view-dataset" element={<ViewDataset />} />
