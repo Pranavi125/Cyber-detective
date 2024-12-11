@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
-const fs = require('fs');
 const path = require('path');
+const ExtractedContent = require('../models/ExtractedContent');
 
 // Function to clean extracted text
 const cleanText = (text) => {
@@ -28,45 +28,47 @@ const extractWebsiteContent = async (url) => {
   }
 };
 
-// Function to save content to file
-const saveContentToFile = (content, filename) => {
-    const folderPath = path.join(__dirname, 'extracted'); // 'extracted' folder inside the server directory
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath); // Create the folder if it doesn't exist
-    }
-  
-    const filePath = path.join(folderPath, filename);
-    fs.writeFileSync(filePath, content, 'utf-8');
-    console.log(`Content saved to ${filePath}`);
-    return filename; // Return the filename to be used in the response
-  };
-  
-
-// POST route to extract content and save it to a file
-// POST route to extract content and save it to a file
+// POST route to extract content and save it to the database and file
 router.post('/extract', async (req, res) => {
-    const { url } = req.body;
-  
-    if (!url) {
-      return res.status(400).json({ success: false, message: 'URL is required' });
+  const { url } = req.body;
+
+  if (!url) {
+    return res.status(400).json({ success: false, message: 'URL is required' });
+  }
+
+  try {
+    // Check if the URL already exists in the database
+    const existingContent = await ExtractedContent.findOne({ url });
+    if (existingContent) {
+      // If it exists, return the existing content
+      return res.json({
+        success: true,
+        content: existingContent.content,
+        filename: existingContent.filename,
+      });
     }
-  
-    try {
-      const content = await extractWebsiteContent(url);
-  
-      // Clean and create a valid filename from the URL
-      const baseFilename = url.replace("https://", "").replace("http://", "").replace(/[^\w\s.-]/g, '_');
-      const filename = `${baseFilename}.txt`;
-  
-      // Save the content to a file in the extracted folder inside the server directory
-      const savedFilename = saveContentToFile(content, filename);
-  
-      // Respond with success, the content, and the filename
-      res.json({ success: true, content, filename: savedFilename });
-    } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-    }
-  });
-  
+
+    // Extract content from the URL
+    const content = await extractWebsiteContent(url);
+
+    // Clean and create a valid filename from the URL
+    const baseFilename = url.replace("https://", "").replace("http://", "").replace(/[^\w\s.-]/g, '_');
+    const filename = `${baseFilename}.txt`;
+
+    // Save the content to MongoDB
+    const newExtractedContent = new ExtractedContent({
+      url,
+      content,
+      filename,
+    });
+    await newExtractedContent.save();
+
+    // Respond with success, the content, and the filename
+    res.json({ success: true, content, filename });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 module.exports = router;
