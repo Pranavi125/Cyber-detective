@@ -5,10 +5,19 @@ const DistilBertQA = () => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [loading, setLoading] = useState(false);
-    const [showDetails, setShowDetails] = useState(false); // State to control the visibility of static details box
+    const [showDetails, setShowDetails] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
     const handleSubmit = async () => {
+        // Check if the question is empty
+        if (!question.trim()) {
+            setErrorMessage('Please provide a question.');
+            return; // Prevent submission if input is empty
+        }
+
+        setErrorMessage(''); // Clear the error message when there's valid input
         setLoading(true);
+
         try {
             const response = await fetch('http://localhost:4000/api/qa', {
                 method: 'POST',
@@ -42,6 +51,7 @@ const DistilBertQA = () => {
             {/* Main container for question and answer */}
             <div className='qabox'>
                 <h2>DistilBERT Question Answering</h2>
+                
                 <div>
                     <input 
                         type="text" 
@@ -53,6 +63,10 @@ const DistilBertQA = () => {
                         {loading ? 'Loading...' : 'Submit'}
                     </button>
                 </div>
+
+                {/* Display error message if input is empty */}
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+
                 {answer && (
                     <div>
                         <h3>Answer:</h3>
