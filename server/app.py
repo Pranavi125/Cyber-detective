@@ -22,7 +22,7 @@ collection = db['scraped_articles']
 
 
 # Paths to the saved .pkl files
-output_dir = "C:/Users/Tukaram/Desktop/3-1 ps/mlmodel"  # Update with your directory
+output_dir = "C:/Users/kpran/OneDrive/Desktop/3-1ps/mlmodel"  # Update with your directory
 model_path = os.path.join(output_dir, "xgboost_model.pkl")
 vectorizer_path = os.path.join(output_dir, "vectorizer.pkl")
 mlb_path = os.path.join(output_dir, "mlb.pkl")

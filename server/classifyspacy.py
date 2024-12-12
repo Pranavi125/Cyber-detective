@@ -8,7 +8,9 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 # Load the trained NER model
-nlp = spacy.load("C:/Users/Tukaram/Desktop/3-1 ps/ner_model")
+#nlp = spacy.load("C:/Users/kpran/OneDrive/Desktop/3-1ps/ner_model.zip")
+nlp = spacy.load("C:/Users/kpran/OneDrive/Desktop/3-1ps/ner_model/content/ner_model")
+
 
 @app.route("/predict-spacy", methods=["POST"])
 def predict():

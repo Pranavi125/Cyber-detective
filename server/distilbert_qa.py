@@ -14,7 +14,7 @@ CORS(app)
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')  # You can use other models like 'all-MiniLM-L6-v2' for better accuracy
 
 # Load dataset for mapping labels to answers
-qa_data = pd.read_csv("C:/Users/Tukaram/Desktop/3-1 ps/qamodel/CleanedQuestionsAnswersCSV.csv", encoding='ISO-8859-1')
+qa_data = pd.read_csv("C:/Users/kpran/OneDrive/Desktop/Q&A csv/CleanedQuestionsAnswersCSV.csv", encoding='ISO-8859-1')
 answers = list(qa_data['Ground Truth'].unique())
 answer_to_label = {answer: idx for idx, answer in enumerate(answers)}
 label_to_answer = {idx: answer for answer, idx in answer_to_label.items()}
