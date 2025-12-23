@@ -1,69 +1,165 @@
-Cyber Detective  
+🕵️‍♀️ Cyber Detective
+AI-Powered Web Intelligence & Question-Answering System
 
-Cyber Detective is an AI-powered investigative assistant designed to scrape the web, analyze data, and provide insightful answers to user queries. Combining the power of web scraping, NLP models, and an interactive MERN stack UI, this project ensures that no piece of information goes unnoticed.  
+Cyber Detective is an intelligent investigative assistant that scrapes the web, analyzes unstructured content, and delivers accurate, AI-generated answers to user queries.
+Built using Python, NLP models, and the MERN stack, this project demonstrates real-world applications of AI, data extraction, and full-stack development.
 
-## Key Features  
+🔍 Designed to ensure no valuable information goes unnoticed.
 
-- **Smart Web Scraping**: Extracts valuable information using BeautifulSoup and Newspaper3k.  
-- **AI-Powered Answers**: Uses DistilBERT and Llama/Groq to process and respond to user queries.  
-- **Automated QA Pair Generation**: Converts scraped content into meaningful question-answer datasets.  
-- **Intuitive UI**: Built with MERN Stack (MongoDB, Express.js, React, Node.js) for a seamless user experience.  
+🚀 Why Cyber Detective?
 
-## Getting Started  
+✔ Real-world AI + Full Stack integration
+✔ End-to-end data pipeline (scraping → NLP → UI)
+✔ Scalable architecture with modern technologies
+✔ Ideal showcase project for AI / Data / Full-Stack roles
 
-### Prerequisites  
+✨ Key Features
+🧠 Intelligent Web Scraping
 
-Ensure you have the following installed:  
-- Node.js  
-- Python  
-- npm or yarn  
-- MongoDB  
+Extracts high-quality content from websites
 
-### Installation Steps  
+Uses BeautifulSoup and Newspaper3k for structured & unstructured data
 
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/Pranavi125/Cyber-detective.git
-   ```
-2. Navigate to the project directory:  
-   ```bash
-   cd Cyber-detective
-   ```
-3. Install dependencies:  
-   ```bash
-   npm install
-   ```
-4. Start the backend server:  
-   ```bash
-   node server.js
-   ```
-5. Start the frontend:  
-   ```bash
-   npm start
-   ```
+🤖 AI-Powered Question Answering
 
-## Performance & Evaluation  
+Processes user queries using DistilBERT
 
-- **BLEU Score**: Evaluates the AI-generated responses against human-verified answers.  
-- **Model Accuracy**: Benchmarked against standard datasets to ensure high reliability.  
-- **Fast Query Processing**: Optimized to deliver answers in real-time.  
+Integrates LLaMA / Groq for advanced reasoning and response generation
 
-## Future Enhancements  
+📊 Automated QA Dataset Generation
 
-- Integration with GPT models for more intelligent and natural responses.  
-- Enhanced web scraping with broader data sources.  
-- User authentication and history tracking for a personalized experience.  
+Converts scraped articles into meaningful Question–Answer pairs
 
-## Contributing  
+Useful for training, evaluation, and benchmarking NLP models
 
-Contributions are welcome. Feel free to submit issues, suggest improvements, or contribute to the codebase.  
+🌐 Modern & Interactive UI
 
-## License  
+Built with MERN Stack
 
-This project is licensed under the MIT License.  
+MongoDB
 
----  
+Express.js
 
-Stay curious and keep investigating.  
+React.js
 
-[GitHub Repository](https://github.com/Pranavi125/Cyber-detective)
+Node.js
+
+Clean, responsive, and user-friendly interface
+
+🛠 Tech Stack
+
+Frontend:
+
+React.js
+
+HTML, CSS, JavaScript
+
+Backend:
+
+Node.js
+
+Express.js
+
+AI / NLP:
+
+Python
+
+DistilBERT
+
+LLaMA / Groq
+
+Database:
+
+MongoDB
+
+Tools & Libraries:
+
+BeautifulSoup
+
+Newspaper3k
+
+⚙️ Getting Started
+✅ Prerequisites
+
+Make sure you have the following installed:
+
+Node.js
+
+Python
+
+npm or yarn
+
+MongoDB
+
+📥 Installation
+
+1️⃣ Clone the repository
+
+git clone https://github.com/Pranavi125/Cyber-detective.git
+
+
+2️⃣ Navigate to the project directory
+
+cd Cyber-detective
+
+
+3️⃣ Install dependencies
+
+npm install
+
+
+4️⃣ Start the backend server
+
+node server.js
+
+
+5️⃣ Start the frontend
+
+npm start
+
+📈 Performance & Evaluation
+
+🧪 BLEU Score Evaluation
+
+Measures similarity between AI-generated responses and human-verified answers
+
+🎯 Model Accuracy
+
+Benchmarked using standard QA datasets
+
+⚡ Fast Query Processing
+
+Optimized for near real-time response delivery
+
+🔮 Future Enhancements
+
+🤝 Integration with GPT models for richer conversational intelligence
+
+🌍 Expanded web scraping across diverse data sources
+
+🔐 User authentication & query history tracking
+
+📊 Personalized insights based on user behavior
+
+🤝 Contributing
+
+Contributions are welcome!
+Feel free to:
+
+Open issues
+
+Suggest enhancements
+
+Submit pull requests
+
+📄 License
+
+This project is licensed under the MIT License.
+
+⭐ Show Your Support
+
+If you find this project useful or interesting, give it a star ⭐
+It helps others discover the project and motivates future improvements!
+
+🔗 GitHub Repository:
+👉 https://github.com/Pranavi125/Cyber-detective
